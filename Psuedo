@@ -1,0 +1,21 @@
+Player Class:
+Parameters: name, symbol
+name is any string, max of 12 characters.
+symbol is any letter or number, can't have duplicate symbols.
+
+Board Class:
+Create an empty 3x3 board, with a placeholder symbol (that players cant select)
+when player plays a move, edit the board.
+Create an array of winning paths, and check if any player has symbols on those winning paths (if a grid is 1 through 9, if a player has a symbol on 1, 5, 9 they win etc)
+
+Game Class:
+A Class to control the board class, player input, winning conditions
+Display Class: A class to control in-game display (e.g player inputs)
+
+Display Class:
+Everything to do with console text, for game experience
+
+Main:
+start the game
+
+
