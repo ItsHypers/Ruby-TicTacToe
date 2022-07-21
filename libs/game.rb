@@ -25,6 +25,7 @@ class Game
     private
     def game_loop
         while @moves <= 9
+            @board.show
             puts "#{current_player.name} pick a number 1-9"
             number = gets.chomp.to_i
             if @board.valid_move?(number)
@@ -32,7 +33,7 @@ class Game
                 @board.show
                 if(@board.game_over?)
                     winner_announce(current_player)
-                    replay_game
+                    return
                 end
                 @current_player = change_current_player
                 @moves += 1
@@ -51,28 +52,57 @@ class Game
     end
     private
     def create_player(number)
-        puts "What is your name, Player #{number}"
-        @name = gets.chomp
-        duplicateCheck(@name)
-        puts "What Symbol would you like to use?"
-        @symbol = gets.chomp
-        duplicateCheck(@name, @symbol)
-        Player.new(number, name, symbol)
+        player_name(number)
     end
     private
-    def duplicateCheck(name = nil, symbol = nil)
+    def player_name(number)
+        puts "What is your name, Player #{number}"
+        @name = gets.chomp
+        if !name_dupe_check(@name, number)
+            player_symbol(@name, number)
+        end
+    end
+    private
+    def player_symbol(name, number)
+        puts "What Symbol would you like to use?"
+        @symbol = gets.chomp
+        if !symbol_dupe_check(name, number, @symbol)
+            player_create(number, @name, @symbol)
+        end
+    end
+
+    private
+    def name_dupe_check(name, number)
         if(@player1 != nil)
             if name == @player1.name
                 puts "You can not use the same name!"
-                @player2 = create_player(2)
-            end
-
-            if symbol == @player1.symbol
-                puts "You can not use the same symbol!"
-                @player2 = create_player(2)
+                player_name(number)
+                return true
+            else
+                return false
             end
         end
-        return
+        return false
+    end
+
+    def symbol_dupe_check(name, number, symbol)
+        if(@player1 != nil)
+            if symbol == @player1.symbol
+                puts "You can not use the same symbol!"
+                player_symbol(name, number)
+                return true
+            end
+        end
+        if symbol.length != 1
+            puts "Symbols can only be 1 character long!"
+            player_symbol(name, number)
+            return true
+        end
+        return false
+    end
+    private
+    def player_create(number, name, symbol)
+        Player.new(number, name, symbol)
     end
     private
     def change_current_player
@@ -86,7 +116,6 @@ class Game
             play(@player1)
         else
             puts "Thank you for playing"
-            return
         end
     end
 end
