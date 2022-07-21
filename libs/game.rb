@@ -53,23 +53,24 @@ class Game
     def create_player(number)
         puts "What is your name, Player #{number}"
         @name = gets.chomp
+        duplicateCheck(@name)
         puts "What Symbol would you like to use?"
         @symbol = gets.chomp
-        if number == 2
-            duplicateCheck(@name, @symbol)
-        end
+        duplicateCheck(@name, @symbol)
         Player.new(number, name, symbol)
     end
     private
-    def duplicateCheck(name, symbol)
-        if name == @player1.name
-            puts "You can not use the same name!"
-            @player2 = create_player(2)
-        end
+    def duplicateCheck(name = nil, symbol = nil)
+        if(@player1 != nil)
+            if name == @player1.name
+                puts "You can not use the same name!"
+                @player2 = create_player(2)
+            end
 
-        if symbol == @player1.symbol
-            puts "You can not use the same symbol!"
-            @player2 = create_player(2)
+            if symbol == @player1.symbol
+                puts "You can not use the same symbol!"
+                @player2 = create_player(2)
+            end
         end
         return
     end
